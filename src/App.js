@@ -71,7 +71,7 @@ class Budget extends Component {
           render: () =>
             this.state.budgetData.length ? <Tab.Pane >
               <div className='pane-wrapper'>
-                {budgetData.length && <PieChart budgetData={budgetData} currentIndex={currentIndex} />}
+                <PieChart budgetData={budgetData} currentIndex={currentIndex} />
                 <div className='data-table'>
                   <div className='data-table-wrapper'>
                     <div className='data-table-row'>
@@ -85,8 +85,8 @@ class Budget extends Component {
                     </div>
                   </div>
                   <div className="data-form-wrapper">
-                    <input name='expenses' placeholder='Название расходов' value={this.state.expenses} onChange={(e) => this.handleChangeInput(e)} />
-                    <input name='amount' type="number" placeholder='Сумма' value={this.state.amount} onChange={(e) => this.handleChangeInput(e)} />
+                    <input name='expenses' placeholder='Название расходов' onChange={(e) => this.handleChangeInput(e)} />
+                    <input name='amount' type="number" placeholder='Сумма' onChange={(e) => this.handleChangeInput(e)} />
                     <button onClick={() => this.saveExpenses()}>Сохранить</button>
                   </div>
                 </div>
@@ -99,11 +99,12 @@ class Budget extends Component {
   }
 
   render() {
-    const { currentIndex } = this.state
+    const { budgetData, currentIndex } = this.state
 
     return (
       <div>
         <Tab activeIndex={currentIndex} menu={{ pointing: true }} panes={this.tabNames()} onTabChange={this.handleTabChange} />
+
       </div>
     )
   }

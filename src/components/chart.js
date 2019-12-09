@@ -8,6 +8,7 @@ export default class PieChart extends Component {
   state = {
     storeBudgetData: null
   }
+
   componentDidUpdate(prevProps, prevState) {
     const { budgetData, currentIndex } = this.props
 
@@ -15,12 +16,9 @@ export default class PieChart extends Component {
       this.buildChart()
     }
     this.buildChart()
-
-
-
   }
-  componentDidMount() {
 
+  componentDidMount() {
     this.buildChart()
   }
 
