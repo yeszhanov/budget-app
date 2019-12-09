@@ -17,8 +17,8 @@ code {
     justify-content: space-between;
 }
 .chart-wrapper{
-  width: 400px !important;
-  /* height: 400px !important; */
+  width: 50% !important;
+  height: auto !important;
 }
 .ui.menu .item{
   flex-grow: 1;
@@ -32,7 +32,7 @@ code {
   flex-grow: 1;
   flex-flow: column;
   /* border: 1px solid black; */
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .data-form-wrapper{
   display: flex;
