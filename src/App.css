@@ -20,3 +20,20 @@
 .App-link {
   color: #09d3ac;
 }
+
+.ui.statistic{
+  align-self: flex-start;
+}
+.ui.compact.button{
+  margin: 5px;
+}
+
+.ui.input{
+  margin: 5px;
+}
+.ui.segment{
+  border: none;
+}
+.ui.attached.segment{
+  border: none;
+}

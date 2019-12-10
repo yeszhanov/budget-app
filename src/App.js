@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './App.css';
-import { getDataFromStorage } from './helpers/main'
-import { Tab } from "semantic-ui-react"
-// import PieChart from './components/chart'
+import { Tab, Statistic, Button, Input } from "semantic-ui-react"
 import Chart from "chart.js";
 
-let myPieChart;
+let doughnutChart;
 class Budget extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +18,6 @@ class Budget extends Component {
   chartRef = React.createRef();
 
   componentDidUpdate(prevProps, prevState) {
-    const { budgetData, currentIndex } = this.state
 
     if (prevState.currentIndex !== this.state.currentIndex) {
       this.buildChart()
@@ -45,9 +42,9 @@ class Budget extends Component {
     let colors = []
 
     Object.keys(budgetData[currentIndex].expenses).map(d => colors.push(this.getRandomColor()))
-    if (myPieChart) myPieChart.destroy();
+    if (doughnutChart) doughnutChart.destroy();
 
-    myPieChart = new Chart(myChartRef, {
+    doughnutChart = new Chart(myChartRef, {
       type: 'pie',
       options: {
         responsive: true,
@@ -83,26 +80,26 @@ class Budget extends Component {
     let tempBudgetData = budgetData
 
     if (expenses !== '' && amount !== '' && !(expenses in tempBudgetData[currentIndex]['expenses'])) {
-      tempBudgetData[currentIndex]['expenses'][expenses] = amount
+      tempBudgetData[currentIndex]['expenses'][expenses] = Number(amount)
       this.setState({
         budgetData: tempBudgetData,
         expenses: '',
         amount: '',
       })
-      myPieChart.destroy()
+      doughnutChart.destroy()
       this.buildChart()
     }
 
   }
 
   removeExpenses = (item) => {
-    const { budgetData, currentIndex, expenses, amount } = this.state
+    const { budgetData, currentIndex } = this.state
     let tempData = [...budgetData]
     delete tempData[currentIndex]['expenses'][item]
     this.setState({
       budgetData: tempData
     })
-    myPieChart.destroy()
+    doughnutChart.destroy()
     this.buildChart()
 
   }
@@ -131,15 +128,17 @@ class Budget extends Component {
                       {Object.values(expenses).map(d => <span key={d}>{d}</span>)}
                     </div>
                     <div className='data-table-row'>
-                      {Object.keys(expenses).map(d => <button key={d} onClick={() => this.removeExpenses(d)}>удалить</button>)}
+                      {Object.keys(expenses).map(d => <Button compact key={d} onClick={() => this.removeExpenses(d)}>удалить</Button>)}
                     </div>
                   </div>
                   <div className="data-form-wrapper">
-                    <input name='expenses' value={this.state.expenses} placeholder='Название расходов' onChange={(e) => this.handleChangeInput(e)} />
-                    <input name='amount' value={this.state.amount} type="number" placeholder='Сумма' onChange={(e) => this.handleChangeInput(e)} />
-                    <button onClick={() => this.saveExpenses()}>Сохранить</button>
+                    <Input name='expenses' value={this.state.expenses} placeholder='Название расходов' onChange={(e) => this.handleChangeInput(e)} />
+                    <Input name='amount' value={this.state.amount} type="number" placeholder='Сумма' onChange={(e) => this.handleChangeInput(e)} />
+                    <Button compact onClick={() => this.saveExpenses()}>Сохранить</Button>
                   </div>
+                  <Statistic label='Всего расходов' value={Object.values(expenses).reduce((a, b) => a + b, 0)} />
                 </div>
+
               </div>
             </Tab.Pane> : <Tab.Pane loading ></Tab.Pane>
         }
@@ -149,7 +148,7 @@ class Budget extends Component {
   }
 
   render() {
-    const { budgetData, currentIndex } = this.state
+    const { currentIndex } = this.state
 
     return (
       <div>
